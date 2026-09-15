@@ -108,7 +108,7 @@ then just run `npm run dev` and now no need for the server to again reload the s
 Use the email connected to the `SR-Test-coder` account:
 
 ```bash
-git config user.name "SECONDARY_ACCOUNT_USERNAM"
+git config user.name "SECONDARY_ACCOUNT_USERNAME"
 git config user.email "SECONDARY_ACCOUNT_EMAIL"
 ```
 
@@ -121,33 +121,29 @@ git config user.email
 
 > These settings apply only to the current repository/folder in inside which you are running this command, because `--global` is not used.
 
-## 5. Add and commit the current files
+**Step 2 ->** Add and commit the current files
 
 ```bash
 git add .
-git status
 ```
-
 Carefully inspect the files under “Changes to be committed.” If everything is correct:
 
 ```bash
 git commit -m "Add short notes"
 ```
-
 Rename the current branch to `main`:
 
 ```bash
 git branch -M main
 ```
 
-## 6. Log into the secondary GitHub account
+**Step 3 ->** Log into the secondary GitHub account
 
 First inspect the saved accounts:
 
 ```bash
 gh auth status
 ```
-
 Now start login:
 
 ```bash
@@ -156,16 +152,15 @@ gh auth login --hostname github.com --git-protocol https --web
 
 When GitHub opens in the browser:
 
-1. Switch to `SR-Test-coder`.
+1. Switch to `SR-Test-coder`. (your secondary account)
 2. Confirm the displayed account is `SR-Test-coder`.
 3. Authorize GitHub CLI.
 
 Select the secondary account:
 
 ```bash
-gh auth switch --hostname github.com --user SR-Test-coder
+gh auth switch --hostname github.com --user SECONDARY_ACCOUNT_USERNAME
 ```
-
 Configure terminal Git to use GitHub CLI authentication:
 
 ```bash
@@ -182,21 +177,20 @@ It should show:
 
 ```text
 Active account: true
-Account: SR-Test-coder
+Account: SR-Test-coder (your secondary username)
 ```
 
-## 7. Add the secondary repository without removing an existing remote
+**Step 4 ->** Add the secondary repository without removing an existing remote
 
 Check existing remotes:
 
 ```bash
 git remote -v
 ```
-
 Add the secondary repository using a separate remote name:
 
 ```bash
-git remote add sr-test https://github.com/SR-Test-coder/Short-Notes.git
+git remote add sr-test YOUR_GITHUB_REPO_LINK_WHERE_YOU_WANT_TO_PUSH
 ```
 
 Verify it:
@@ -224,19 +218,14 @@ update the existing URL:
 git remote set-url sr-test https://github.com/SR-Test-coder/Short-Notes.git
 ```
 
-## 8. Push to `SR-Test-coder`
+**Step 5 ->** Push to `SR-Test-coder`
 
 ```bash
 git push -u sr-test main
 ```
+After it finishes, refresh the repository in your browser and it should contain all the files and folder that you have pushed in the repo.
 
-After it finishes, refresh this repository in your browser:
-
-```text
-https://github.com/SR-Test-coder/Short-Notes
-```
-
-## If GitHub rejects the push
+**Step 6 (Optional) ->** If GitHub rejects the push
 
 If you created the GitHub repository with a README, you may receive a non-fast-forward error. Use:
 
@@ -251,24 +240,22 @@ git add .
 git commit -m "Merge GitHub repository"
 git push -u sr-test main
 ```
+> Do not use `--force`.
 
-Do not use `--force`.
-
-## 9. Switch terminal authentication back to your primary account
+**Step 7 ->** Switch terminal authentication back to your primary account
 
 After the push succeeds:
 
 ```bash
-gh auth switch --hostname github.com --user SatyamRaj1905
+gh auth switch --hostname github.com --user PRIMARY_ACCOUNT_USERNAME
 ```
-
 Verify:
 
 ```bash
 gh auth status --active --hostname github.com
 ```
 
-This does not remove the secondary account. It merely makes `SatyamRaj1905` active again.
+This does not remove the secondary account. It merely makes `SatyamRaj1905` (your primary account username) active again.
 
 For future updates to this particular repository:
 
@@ -277,5 +264,4 @@ gh auth switch --hostname github.com --user SR-Test-coder
 git push sr-test main
 gh auth switch --hostname github.com --user SatyamRaj1905
 ```
-
-The `sr-test` remote belongs only to this repository. It will not change the remotes or destinations of your other project folders.
+> <span style="color:orange">**The `sr-test` remote belongs only to this repository. It will not change the remotes or destinations of your other project folders.**</span>
